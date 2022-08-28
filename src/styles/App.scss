@@ -23,15 +23,11 @@ $bg-color: #EBBE9B;
 }
 .games-list{
     table{
-        width: 100%;
-        max-width: 400px;
-        tr{
-            text-align: center;
-        }
         form{
             display: inline;
         }
         input{
+            text-align: center;
             width: 30px;
         }
         

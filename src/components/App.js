@@ -10,16 +10,12 @@ function App() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(teams);
     setTeams([
       ...teams,
       {
         id: uid(),
         name: event.target.team_name.value,
-        played: 0,
-        win: 0,
-        draw: 0,
-        lost: 0,
+        score: 0,
       },
     ]);
     event.target.team_name.value = "";

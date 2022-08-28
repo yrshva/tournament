@@ -1,12 +1,16 @@
 import { uid } from "uid";
+import { useState } from "react";
 
 export default function Teams(props) {
   const teams = props.teamsData;
+  const [update, forceUpdate] = useState();
   let matches = [];
   function permutation(array, length) {
+    let init = 0;
     return (matches = array.flatMap((element, i) =>
       length > 1
-        ? permutation(array.slice(i + 1), length - 1).map((el) => [
+        ? permutation(array.slice(i + 1), length - 1).map((el, index) => [
+            { id: (init = init + 1) },
             element,
             ...el,
           ])
@@ -14,12 +18,7 @@ export default function Teams(props) {
     ));
   }
   permutation(teams, 2);
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    teams.map((team, index) => console.log(event.target.team.id.value));
-  }
-
+  console.log(matches);
   return (
     <div className="tables row">
       <div className="col-12 col-md-8 score-table d-flex justify-content-center">
@@ -36,7 +35,7 @@ export default function Teams(props) {
             </tr>
           </thead>
           <tbody>
-            {teams.length > 0 ? (
+            {teams.length > 0 &&
               teams.map((team, index) => (
                 <tr key={index}>
                   <th scope="row">{index + 1}</th>
@@ -47,10 +46,7 @@ export default function Teams(props) {
                   <td>{team.lost}</td>
                   <td>{team.win * 3 + team.draw}</td>
                 </tr>
-              ))
-            ) : (
-              <></>
-            )}
+              ))}
           </tbody>
         </table>
       </div>
@@ -60,22 +56,38 @@ export default function Teams(props) {
             {teams.length > 1 &&
               matches.map((match, index) => (
                 <tr key={index}>
-                  {match.map((col, index) =>
-                    index % 2 === 0 ? (
-                      <td key={index}>
-                        {col.name}
-                        <form onSubmit={handleSubmit}>
-                          <input type="text" name={col.id} />
-                        </form>
-                      </td>
-                    ) : (
-                      <td key={index}>
-                        <form onSubmit={handleSubmit}>
-                          <input type="text" name={col.id} />
-                        </form>
-                        {col.name}
-                      </td>
-                    )
+                  {match.map(
+                    (col, index) =>
+                      index !== 0 &&
+                      (index % 2 !== 0 ? (
+                        <td key={index}>
+                          {col.name}
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              col.score = e.target.score.value;
+                              forceUpdate(uid());
+                            }}
+                            className="ms-3"
+                          >
+                            <input type="text" name="score" />
+                          </form>
+                        </td>
+                      ) : (
+                        <td key={index}>
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              col.score = e.target.score.value;
+                              forceUpdate(uid());
+                            }}
+                            className="me-3"
+                          >
+                            <input type="text" name="score" />
+                          </form>
+                          {col.name}
+                        </td>
+                      ))
                   )}
                 </tr>
               ))}

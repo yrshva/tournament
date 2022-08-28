@@ -24,16 +24,10 @@
   max-width: 900px;
 }
 
-.games-list table {
-  width: 100%;
-  max-width: 400px;
-}
-.games-list table tr {
-  text-align: center;
-}
 .games-list table form {
   display: inline;
 }
 .games-list table input {
+  text-align: center;
   width: 30px;
 }/*# sourceMappingURL=App.css.map */
