@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function Teams(props) {
   const teams = props.teamsData;
-  const [update, forceUpdate] = useState();
+  const [, forceUpdate] = useState();
   let matches = [];
   function permutation(array, length) {
     let init = 0;
@@ -17,8 +17,44 @@ export default function Teams(props) {
         : [[element]]
     ));
   }
+  console.log("_________________________");
+  function scoreCalculator(team, index) {
+    let win, draw, lost, teamCurrent, teamCompetitor;
+    win = draw = lost = teamCurrent = teamCompetitor = 0;
+    matches.map((match) => {
+      if (
+        (match[1].id === team.id || match[2].id === team.id) &&
+        (match[1].score !== 0 || match[2].score !== 0)
+      ) {
+        console.log(match[1].name + match[2].name);
+        if (match[1].id === team.id) {
+          teamCurrent = match[1];
+          teamCompetitor = match[2];
+        } else {
+          teamCurrent = match[2];
+          teamCompetitor = match[1];
+        }
+        if (teamCurrent.score > teamCompetitor.score) {
+          win = win + 1;
+        } else if (teamCurrent.score === teamCompetitor.score) {
+          draw = draw + 1;
+        } else lost = lost + 1;
+        console.log(`teamCurrent ${teamCurrent.name}`);
+      }
+    });
+    return (
+      <tr key={index}>
+        <th scope="row">{index + 1}</th>
+        <td>{team.name}</td>
+        <td>{win + draw + lost}</td>
+        <td>{win}</td>
+        <td>{draw}</td>
+        <td>{lost}</td>
+        <td>{win * 3 + draw}</td>
+      </tr>
+    );
+  }
   permutation(teams, 2);
-  console.log(matches);
   return (
     <div className="tables row">
       <div className="col-12 col-md-8 score-table d-flex justify-content-center">
@@ -35,18 +71,7 @@ export default function Teams(props) {
             </tr>
           </thead>
           <tbody>
-            {teams.length > 0 &&
-              teams.map((team, index) => (
-                <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{team.name}</td>
-                  <td>{team.played}</td>
-                  <td>{team.win}</td>
-                  <td>{team.draw}</td>
-                  <td>{team.lost}</td>
-                  <td>{team.win * 3 + team.draw}</td>
-                </tr>
-              ))}
+            {teams.map((team, index) => scoreCalculator(team, index))}
           </tbody>
         </table>
       </div>
@@ -65,7 +90,7 @@ export default function Teams(props) {
                           <form
                             onSubmit={(e) => {
                               e.preventDefault();
-                              col.score = e.target.score.value;
+                              col.score = Number(e.target.score.value);
                               forceUpdate(uid());
                             }}
                             className="ms-3"
@@ -78,7 +103,7 @@ export default function Teams(props) {
                           <form
                             onSubmit={(e) => {
                               e.preventDefault();
-                              col.score = e.target.score.value;
+                              col.score = Number(e.target.score.value);
                               forceUpdate(uid());
                             }}
                             className="me-3"
