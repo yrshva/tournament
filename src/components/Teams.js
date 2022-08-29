@@ -7,6 +7,7 @@ export default function Teams(props) {
   const [matches, setMatches] = useState();
   const [loading, isLoading] = useState(true);
 
+  console.log("_________________________");
   function scoreCalculator(team, index) {
     let win, draw, lost, teamCurrent, teamCompetitor;
     win = draw = lost = teamCurrent = teamCompetitor = 0;
@@ -14,13 +15,15 @@ export default function Teams(props) {
       matches.map((match) => {
         if (
           (match.teams[0].id === team.id || match.teams[1].id === team.id) &&
-          match.teams[0].score &&
-          match.teams[1].score
+          match.teams[0].score !== undefined &&
+          match.teams[1].score !== undefined
         ) {
           match.teams.map((el) =>
             el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
           );
-
+          console.log(
+            ` ${teamCurrent.name} -  ${teamCurrent.score} : ${teamCompetitor.score} - ${teamCompetitor.name}  `
+          );
           if (teamCurrent.score > teamCompetitor.score) {
             return (win = win + 1);
           } else if (teamCurrent.score === teamCompetitor.score) {
