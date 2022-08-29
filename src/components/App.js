@@ -22,15 +22,17 @@ function App() {
   }
   function showSearch() {
     return (
-      <form className="d-flex justify-content-center" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="team_name"
-          placeholder="New team"
-          className="form-control me-3 input-width"
-        />
-        <input type="submit" placeholder="Add" className="btn btn-dark" />
-      </form>
+      <div className="col-12 col-md-8 d-flex justify-content-center">
+        <form className="d-flex" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="team_name"
+            placeholder="New team"
+            className="form-control me-3"
+          />
+          <input type="submit" placeholder="Add" className="btn btn-dark" />
+        </form>
+      </div>
     );
   }
 
