@@ -1,21 +1,21 @@
 import { uid } from "uid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Teams(props) {
   const teams = props.teamsData;
   const [, forceUpdate] = useState();
-  let matches = [];
+  const [matches, setMatches] = useState([]);
   function permutation(array, length) {
     let init = 0;
-    return (matches = array.flatMap((element, i) =>
+    return array.flatMap((element, i) =>
       length > 1
-        ? permutation(array.slice(i + 1), length - 1).map((el, index) => [
+        ? permutation(array.slice(i + 1), length - 1).map((el) => [
             { id: (init = init + 1) },
             element,
             ...el,
           ])
         : [[element]]
-    ));
+    );
   }
   console.log("_________________________");
   function scoreCalculator(team, index) {
@@ -24,24 +24,30 @@ export default function Teams(props) {
     matches.map((match) => {
       if (
         (match[1].id === team.id || match[2].id === team.id) &&
-        (match[1].score !== 0 || match[2].score !== 0)
+        match[1].score &&
+        match[2].score
       ) {
-        console.log(match[1].name + match[2].name);
-        if (match[1].id === team.id) {
-          teamCurrent = match[1];
-          teamCompetitor = match[2];
-        } else {
-          teamCurrent = match[2];
-          teamCompetitor = match[1];
-        }
+        match.map((el) =>
+          el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
+        );
+
         if (teamCurrent.score > teamCompetitor.score) {
-          win = win + 1;
+          return (win = win + 1);
         } else if (teamCurrent.score === teamCompetitor.score) {
-          draw = draw + 1;
-        } else lost = lost + 1;
-        console.log(`teamCurrent ${teamCurrent.name}`);
-      }
+          return (draw = draw + 1);
+        } else return (lost = lost + 1);
+      } else return null;
     });
+    console.log(
+      ` ${teamCurrent.name} -  ${teamCurrent.score} : ${teamCompetitor.score} - ${teamCompetitor.name}  `
+    );
+    /*console.log(
+      `teamCurrent ${teamCurrent.name}
+        lost: ${lost}
+        win: ${win}
+        draw: ${draw}
+        `
+    );*/
     return (
       <tr key={index}>
         <th scope="row">{index + 1}</th>
@@ -54,7 +60,10 @@ export default function Teams(props) {
       </tr>
     );
   }
-  permutation(teams, 2);
+  useEffect(() => {
+    setMatches(permutation(teams, 2));
+  }, [teams]);
+
   return (
     <div className="tables row">
       <div className="col-12 col-md-8 score-table d-flex justify-content-center">
@@ -82,20 +91,29 @@ export default function Teams(props) {
               matches.map((match, index) => (
                 <tr key={index}>
                   {match.map(
-                    (col, index) =>
+                    (team, index) =>
                       index !== 0 &&
                       (index % 2 !== 0 ? (
                         <td key={index}>
-                          {col.name}
+                          {team.name}
                           <form
                             onSubmit={(e) => {
                               e.preventDefault();
-                              col.score = Number(e.target.score.value);
-                              forceUpdate(uid());
+
+                              matches.map(
+                                (m) =>
+                                  m[0].id === match[0].id &&
+                                  m.map(
+                                    (el) =>
+                                      el.id === team.id &&
+                                      (el.score = e.target.score.value) &&
+                                      forceUpdate(uid())
+                                  )
+                              );
                             }}
                             className="ms-3"
                           >
-                            <input type="text" name="score" />
+                            <input type="number" min="0" name="score" />
                           </form>
                         </td>
                       ) : (
@@ -103,14 +121,22 @@ export default function Teams(props) {
                           <form
                             onSubmit={(e) => {
                               e.preventDefault();
-                              col.score = Number(e.target.score.value);
-                              forceUpdate(uid());
+                              matches.map(
+                                (m) =>
+                                  m[0].id === match[0].id &&
+                                  m.map(
+                                    (el) =>
+                                      el.id === team.id &&
+                                      (el.score = e.target.score.value) &&
+                                      forceUpdate(uid())
+                                  )
+                              );
                             }}
                             className="me-3"
                           >
-                            <input type="text" name="score" />
+                            <input type="number" min="0" name="score" />
                           </form>
-                          {col.name}
+                          {team.name}
                         </td>
                       ))
                   )}

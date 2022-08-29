@@ -15,7 +15,6 @@ function App() {
       {
         id: uid(),
         name: event.target.team_name.value,
-        score: 0,
       },
     ]);
     event.target.team_name.value = "";
