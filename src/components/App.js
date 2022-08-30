@@ -4,11 +4,11 @@ import { uid } from "uid";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/App.css";
 
-function App() {
+const App = () => {
   const [teams, setTeams] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
     setTeams([
       ...teams,
@@ -19,8 +19,8 @@ function App() {
     ]);
     event.target.team_name.value = "";
     setLoaded(true);
-  }
-  function showSearch() {
+  };
+  const showSearch = () => {
     return (
       <div className="col-12 col-md-8 d-flex justify-content-center">
         <form className="d-flex" onSubmit={handleSubmit}>
@@ -34,7 +34,7 @@ function App() {
         </form>
       </div>
     );
-  }
+  };
 
   if (loaded) {
     return (
@@ -51,6 +51,6 @@ function App() {
         <div className="container verital-align">{showSearch()}</div>
       </div>
     );
-}
+};
 
 export default App;

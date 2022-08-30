@@ -1,14 +1,14 @@
 import { uid } from "uid";
 import { useEffect, useState } from "react";
 
-export default function Teams(props) {
+const Teams = (props) => {
   const teams = props.teamsData;
   const [, forceUpdate] = useState();
   const [matches, setMatches] = useState();
   const [loading, isLoading] = useState(true);
 
   console.log("_________________________");
-  function scoreCalculator(team, index) {
+  const scoreCalculator = (team, index) => {
     let win, draw, lost, teamCurrent, teamCompetitor;
     win = draw = lost = teamCurrent = teamCompetitor = 0;
     matches &&
@@ -42,9 +42,9 @@ export default function Teams(props) {
         <td>{win * 3 + draw}</td>
       </tr>
     );
-  }
+  };
   useEffect(() => {
-    function permutation(array, length) {
+    const permutation = (array, length) => {
       let init = 0;
       return array.flatMap((element, i) =>
         length > 1
@@ -54,13 +54,12 @@ export default function Teams(props) {
             }))
           : [[element]]
       );
-    }
+    };
     setMatches(permutation(teams, 2));
     isLoading(false);
   }, [teams]);
 
   console.log(matches);
-
   return loading ? (
     <></>
   ) : (
@@ -96,8 +95,8 @@ export default function Teams(props) {
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
-                            (team.score = Number(e.target.score.value)) &&
-                              forceUpdate(uid());
+                            team.score = Number(e.target.score.value);
+                            forceUpdate(uid());
                           }}
                           className="ms-3"
                         >
@@ -109,8 +108,8 @@ export default function Teams(props) {
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
-                            (team.score = Number(e.target.score.value)) &&
-                              forceUpdate(uid());
+                            team.score = Number(e.target.score.value);
+                            forceUpdate(uid());
                           }}
                           className="me-3"
                         >
@@ -127,4 +126,5 @@ export default function Teams(props) {
       </div>
     </div>
   );
-}
+};
+export default Teams;
