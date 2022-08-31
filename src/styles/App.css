@@ -3,34 +3,8 @@
   word-wrap: break-word;
 }
 
-.app-container {
-  background-color: #EBBE9B;
-  min-height: 100vh;
-  width: 100%;
-  padding-top: 30px;
-  font-family: "Inter", sans-serif;
-}
-
-.verital-align {
-  position: relative;
-  max-width: 1200px;
-}
-
-.score-table {
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.table-width {
-  max-width: 900px;
-}
-@media screen and (max-width: 900px) {
-  .table-width .width {
-    max-width: 30px;
-  }
-}
-
 .games-list {
+  margin-top: 20px;
   font-size: 14px;
 }
 .games-list label span {
@@ -43,8 +17,48 @@
 }
 .games-list label input {
   border: none;
-  border-radius: 10%;
+  border-radius: 5px;
   margin: 5px 10px;
   text-align: center;
   width: 50px;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 20%;
+}
+
+.app-container {
+  background-color: #EBBE9B;
+  min-height: 100vh;
+  width: 100%;
+  padding-top: 30px;
+  font-family: "Inter", sans-serif;
+}
+
+.position {
+  position: relative;
+  max-width: 1200px;
+}
+
+.score-table {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.table-width {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  max-width: 900px;
+}
+@media screen and (max-width: 900px) {
+  .table-width .width {
+    max-width: 30px;
+  }
+}
+
+.font {
+  font-family: Arial, Helvetica, sans-serif;
 }/*# sourceMappingURL=App.css.map */

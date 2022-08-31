@@ -59,10 +59,10 @@ const Teams = (props) => {
     <></>
   ) : (
     <div className="tables row">
-      <div className="col-12 col-lg-7 score-table d-flex justify-content-center">
+      <div className="col-12 col-lg-7 score-table">
         <table className="table table-dark table-bordered table-width">
           <thead className="thead-dark">
-            <tr>
+            <tr className="font">
               <th scope="col">Place</th>
               <th scope="col">Team</th>
               <th scope="col">Played</th>
@@ -77,48 +77,8 @@ const Teams = (props) => {
           </tbody>
         </table>
       </div>
-      <div className="games-list col-12 col-lg-5  d-flex justify-content-center">
-        <table className="d-none">
-          <tbody>
-            {teams.length > 1 &&
-              matches.map((match, index) => (
-                <tr key={index}>
-                  {match.teams.map((team, i) =>
-                    i % 2 === 0 ? (
-                      <td key={i}>
-                        {team.name}
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            team.score = Number(match.id);
-                            forceUpdate(uid());
-                          }}
-                          className="ms-3"
-                        >
-                          <input type="number" min="0" name="score" />
-                        </form>
-                      </td>
-                    ) : (
-                      <td key={i}>
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            team.score = Number(e.target.score.value);
-                            forceUpdate(uid());
-                          }}
-                          className="me-3"
-                        >
-                          <input type="number" min="0" name="score" />
-                        </form>
-                        {team.name}
-                      </td>
-                    )
-                  )}
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        <div className="games-list">
+      <div className="games-list col-12 col-lg-5 d-flex justify-content-center">
+        <div>
           {matches.map((match, index) => (
             <form
               key={index}

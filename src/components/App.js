@@ -40,7 +40,7 @@ const App = () => {
   if (loaded) {
     return (
       <div className="app-container">
-        <div className="container verital-align">
+        <div className="container position">
           {showSearch()}
           <Teams teamsData={teams} />
         </div>
@@ -49,7 +49,7 @@ const App = () => {
   } else
     return (
       <div className="app-container">
-        <div className="container verital-align">{showSearch()}</div>
+        <div className="container position">{showSearch()}</div>
       </div>
     );
 };

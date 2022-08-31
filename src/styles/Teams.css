@@ -1,1 +1,23 @@
-/*# sourceMappingURL=Teams.css.map */
+.games-list {
+  margin-top: 20px;
+  font-size: 14px;
+}
+.games-list label span {
+  line-height: 14px;
+  display: inline-block;
+  width: 70px;
+}
+.games-list label .team-left {
+  text-align: right;
+}
+.games-list label input {
+  border: none;
+  border-radius: 5px;
+  margin: 5px 10px;
+  text-align: center;
+  width: 50px;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 20%;
+}/*# sourceMappingURL=Teams.css.map */
