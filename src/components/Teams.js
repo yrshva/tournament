@@ -77,7 +77,7 @@ const Teams = (props) => {
   }, [teams]);
   useEffect(() => {
     const scores = JSON.parse(localStorage.getItem("scores"));
-    if (teams) {
+    if (scores) {
       setScores(scores);
     }
   }, []);
