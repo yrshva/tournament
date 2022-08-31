@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 
 const Teams = (props) => {
   const teams = props.teamsData;
-  const [, forceUpdate] = useState();
+  const [update, updateTeams] = useState();
   const [matches, setMatches] = useState();
   const [loading, isLoading] = useState(true);
   const [scores, setScores] = useState([]);
+
   const scoreCalculator = (team, index) => {
     let win, draw, lost, teamCurrent, teamCompetitor;
     win = draw = lost = teamCurrent = teamCompetitor = 0;
@@ -29,13 +30,31 @@ const Teams = (props) => {
       });
     return (
       <tr key={index}>
-        <th scope="row">{index + 1}</th>
+        <th scope="row" className="place">
+          <div
+            className="delete"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              teams.splice(index, 1);
+              scores.map((score, i) => {
+                (score.teams[0].id === team.id ||
+                  score.teams[1].id === team.id) &&
+                  scores.splice(i, 1);
+              });
+              updateTeams(`deleted ${team.name}`);
+            }}
+          >
+            x
+          </div>
+          <span className="place-index">{index + 1}</span>
+        </th>
         <td className="width line-wrap">{team.name}</td>
         <td>{win + draw + lost}</td>
         <td>{win}</td>
         <td>{draw}</td>
         <td>{lost}</td>
-        <td>{win * 3 + draw}</td>
+        <td>{(team.points = win * 3 + draw)}</td>
       </tr>
     );
   };
@@ -53,7 +72,8 @@ const Teams = (props) => {
     };
     setMatches(permutation(teams, 2));
     isLoading(false);
-  }, [teams]);
+  }, [teams, update]);
+  console.log(scores);
 
   return loading ? (
     <></>
@@ -102,7 +122,6 @@ const Teams = (props) => {
                     ],
                   },
                 ]);
-                forceUpdate(uid());
               }}
             >
               {match.teams.map((team, i) =>
