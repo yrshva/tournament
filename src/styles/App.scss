@@ -1,33 +1,47 @@
-$bg-color: #EBBE9B;
+@import "Variables";
+@import "Teams";
 
 .app-container{
     background-color: $bg-color;
     min-height: 100vh;
     width: 100%;
     padding-top: 30px;
+    font-family: $primary-font;
 }
 .verital-align{
     position: relative;
-    /*top: 50%;
-    transform: translateY(-50%);*/
-    max-width: 900px;
+    max-width: 1200px;
 }
 .score-table{
     margin-top: 20px;
+    font-size: 14px;
 }
 .table-width{
     max-width: 900px;
+    .width{
+        @media screen and (max-width: 900px ){
+        max-width: 30px;
+    }}
 }
+
 .games-list{
-    table{
-        form{
-            display: inline;
-        }
+    font-size: 14px;
+
+    label{
+       span{
+        line-height: 14px;
+        display: inline-block;
+        width: 70px;
+    }
+    .team-left{
+        text-align: right;
+    }
         input{
+            border: none;
+            border-radius: 10%;
+            margin: 5px 10px;
             text-align: center;
             width: 50px;
         }
-        
     }
-    
 }
