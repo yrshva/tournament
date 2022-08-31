@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Teams from "./Teams";
 import { uid } from "uid";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -36,7 +36,15 @@ const App = () => {
       </div>
     );
   };
-
+  useEffect(() => {
+    const teams = JSON.parse(localStorage.getItem("teams"));
+    if (teams) {
+      setTeams(teams);
+    }
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("teams", JSON.stringify(teams));
+  }, [teams]);
   if (loaded) {
     return (
       <div className="app-container">
