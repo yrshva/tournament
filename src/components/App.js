@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/App.css";
 
 const App = () => {
-  const [teams, setTeams] = useState([]);
+  const savedteams = JSON.parse(window.localStorage.getItem("teams"));
+  const [teams, setTeams] = useState(savedteams ? savedteams : []);
   const [loaded, setLoaded] = useState(false);
 
   const handleSubmit = (event) => {
@@ -18,7 +19,6 @@ const App = () => {
       },
     ]);
     event.target.team_name.value = "";
-    setLoaded(true);
   };
   const showSearch = () => {
     return (
@@ -37,13 +37,10 @@ const App = () => {
     );
   };
   useEffect(() => {
-    const teams = JSON.parse(localStorage.getItem("teams"));
-    if (teams) {
-      setTeams(teams);
-    }
-  }, []);
+    setLoaded(true);
+  }, [teams]);
   useEffect(() => {
-    localStorage.setItem("teams", JSON.stringify(teams));
+    window.localStorage.setItem("teams", JSON.stringify(teams));
   }, [teams]);
   if (loaded) {
     return (

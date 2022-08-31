@@ -1,45 +1,34 @@
-import { uid } from "uid";
 import { useEffect, useState } from "react";
 
 const Teams = (props) => {
+  const savedscores = JSON.parse(window.localStorage.getItem("scores"));
+  const savedscoresIds = savedscores && savedscores.map((el) => el.id);
   const teams = props.teamsData;
-  const [, forceUpdate] = useState();
   const [matches, setMatches] = useState();
   const [loading, isLoading] = useState(true);
-  const [scores, setScores] = useState([]);
+  const [scores, setScores] = useState(savedscores ? savedscores : []);
+  const [scoresWithoutDublicates, setScoresWithoutDublicates] = useState();
   const scoreCalculator = () => {
     teams.map((team) => {
       let win, draw, lost, teamCurrent, teamCompetitor;
       win = draw = lost = teamCurrent = teamCompetitor = 0;
-      const uniqueIds = [];
-      scores &&
-        [...scores]
-          .reverse()
-          .filter((element) => {
-            const isDuplicate = uniqueIds.includes(element.id);
-            if (!isDuplicate) {
-              uniqueIds.push(element.id);
-              return true;
-            }
-            return false;
-          })
-          .map((score) => {
-            if (
-              (score.teams[0].id === team.id ||
-                score.teams[1].id === team.id) &&
-              score.teams[0].score !== undefined &&
-              score.teams[1].score !== undefined
-            ) {
-              score.teams.map((el) =>
-                el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
-              );
-              if (teamCurrent.score > teamCompetitor.score) {
-                return (win = win + 1);
-              } else if (teamCurrent.score === teamCompetitor.score) {
-                return (draw = draw + 1);
-              } else return (lost = lost + 1);
-            } else return null;
-          });
+      scoresWithoutDublicates &&
+        [...scoresWithoutDublicates].map((score) => {
+          if (
+            (score.teams[0].id === team.id || score.teams[1].id === team.id) &&
+            score.teams[0].score !== undefined &&
+            score.teams[1].score !== undefined
+          ) {
+            score.teams.map((el) =>
+              el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
+            );
+            if (teamCurrent.score > teamCompetitor.score) {
+              return (win = win + 1);
+            } else if (teamCurrent.score === teamCompetitor.score) {
+              return (draw = draw + 1);
+            } else return (lost = lost + 1);
+          } else return null;
+        });
       team.played = win + draw + lost;
       team.win = win;
       team.draw = draw;
@@ -76,15 +65,28 @@ const Teams = (props) => {
     isLoading(false);
   }, [teams]);
   useEffect(() => {
-    const scores = JSON.parse(localStorage.getItem("scores"));
-    if (scores) {
-      setScores(scores);
-    }
-  }, []);
-  useEffect(() => {
-    localStorage.setItem("scores", JSON.stringify(scores));
+    const uniqueIds = [];
+    setScoresWithoutDublicates(
+      [...scores]
+        .reverse()
+        .filter((element) => {
+          const isDuplicate = uniqueIds.includes(element.id);
+          if (!isDuplicate) {
+            uniqueIds.push(element.id);
+            return true;
+          }
+          return false;
+        })
+        .reverse()
+    );
   }, [scores]);
-
+  useEffect(() => {
+    scoresWithoutDublicates &&
+      window.localStorage.setItem(
+        "scores",
+        JSON.stringify(scoresWithoutDublicates)
+      );
+  }, [scoresWithoutDublicates]);
   return loading ? (
     <></>
   ) : (
@@ -130,19 +132,50 @@ const Teams = (props) => {
                     ],
                   },
                 ]);
-                forceUpdate(uid());
               }}
             >
               {match.teams.map((team, i) =>
                 i % 2 === 0 ? (
                   <label key={i} className="">
                     <span className="team-left line-wrap">{team.name}</span>
-                    <input type="number" min="0" name="team1" required />
+                    {savedscoresIds.includes(match.id) ? (
+                      savedscores.map(
+                        (el, j) =>
+                          el.id === match.id && (
+                            <input
+                              key={j}
+                              type="number"
+                              min="0"
+                              name="team1"
+                              defaultValue={el.teams[0].score}
+                              required
+                            />
+                          )
+                      )
+                    ) : (
+                      <input type="number" min="0" name="team1" required />
+                    )}
                   </label>
                 ) : (
                   <label key={i}>
                     :
-                    <input type="number" min="0" name="team2" required />
+                    {savedscoresIds.includes(match.id) ? (
+                      savedscores.map(
+                        (el, j) =>
+                          el.id === match.id && (
+                            <input
+                              key={j}
+                              type="number"
+                              min="0"
+                              name="team2"
+                              defaultValue={el.teams[1].score}
+                              required
+                            />
+                          )
+                      )
+                    ) : (
+                      <input type="number" min="0" name="team2" required />
+                    )}
                     <span className="team-right line-wrap">{team.name}</span>
                   </label>
                 )

@@ -7,6 +7,9 @@
   margin-top: 20px;
   font-size: 14px;
 }
+.games-list label {
+  padding: 5px;
+}
 .games-list label span {
   line-height: 14px;
   display: inline-block;
