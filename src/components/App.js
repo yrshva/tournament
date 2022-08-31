@@ -22,7 +22,7 @@ const App = () => {
   };
   const showSearch = () => {
     return (
-      <div className="col-12 col-md-8 d-flex justify-content-center">
+      <div className="col-12 col-lg-7 d-flex justify-content-center">
         <form className="d-flex" onSubmit={handleSubmit}>
           <input
             type="text"

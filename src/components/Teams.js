@@ -10,23 +10,33 @@ const Teams = (props) => {
   const scoreCalculator = (team, index) => {
     let win, draw, lost, teamCurrent, teamCompetitor;
     win = draw = lost = teamCurrent = teamCompetitor = 0;
+    const uniqueIds = [];
     scores &&
-      scores.map((score) => {
-        if (
-          (score.teams[0].id === team.id || score.teams[1].id === team.id) &&
-          score.teams[0].score !== undefined &&
-          score.teams[1].score !== undefined
-        ) {
-          score.teams.map((el) =>
-            el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
-          );
-          if (teamCurrent.score > teamCompetitor.score) {
-            return (win = win + 1);
-          } else if (teamCurrent.score === teamCompetitor.score) {
-            return (draw = draw + 1);
-          } else return (lost = lost + 1);
-        } else return null;
-      });
+      scores
+        .filter((element) => {
+          const isDuplicate = uniqueIds.includes(element.id);
+          if (!isDuplicate) {
+            uniqueIds.push(element.id);
+            return true;
+          }
+          return false;
+        })
+        .map((score) => {
+          if (
+            (score.teams[0].id === team.id || score.teams[1].id === team.id) &&
+            score.teams[0].score !== undefined &&
+            score.teams[1].score !== undefined
+          ) {
+            score.teams.map((el) =>
+              el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
+            );
+            if (teamCurrent.score > teamCompetitor.score) {
+              return (win = win + 1);
+            } else if (teamCurrent.score === teamCompetitor.score) {
+              return (draw = draw + 1);
+            } else return (lost = lost + 1);
+          } else return null;
+        });
     return (
       <tr key={index}>
         <th scope="row">{index + 1}</th>
@@ -35,7 +45,7 @@ const Teams = (props) => {
         <td>{win}</td>
         <td>{draw}</td>
         <td>{lost}</td>
-        <td>{win * 3 + draw}</td>
+        <td>{(team.points = win * 3 + draw)}</td>
       </tr>
     );
   };
@@ -54,7 +64,7 @@ const Teams = (props) => {
     setMatches(permutation(teams, 2));
     isLoading(false);
   }, [teams]);
-
+  console.log(teams);
   return loading ? (
     <></>
   ) : (
@@ -122,7 +132,7 @@ const Teams = (props) => {
               <input
                 type="submit"
                 value="Save"
-                className="btn btn-dark btn-sm"
+                className="btn btn-dark btn-sm btn-custom"
               />
             </form>
           ))}
