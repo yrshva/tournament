@@ -6,23 +6,19 @@ const Teams = (props) => {
   const [, forceUpdate] = useState();
   const [matches, setMatches] = useState();
   const [loading, isLoading] = useState(true);
-
-  console.log("_________________________");
+  const [scores, setScores] = useState([]);
   const scoreCalculator = (team, index) => {
     let win, draw, lost, teamCurrent, teamCompetitor;
     win = draw = lost = teamCurrent = teamCompetitor = 0;
-    matches &&
-      matches.map((match) => {
+    scores &&
+      scores.map((score) => {
         if (
-          (match.teams[0].id === team.id || match.teams[1].id === team.id) &&
-          match.teams[0].score !== undefined &&
-          match.teams[1].score !== undefined
+          (score.teams[0].id === team.id || score.teams[1].id === team.id) &&
+          score.teams[0].score !== undefined &&
+          score.teams[1].score !== undefined
         ) {
-          match.teams.map((el) =>
+          score.teams.map((el) =>
             el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
-          );
-          console.log(
-            ` ${teamCurrent.name} -  ${teamCurrent.score} : ${teamCompetitor.score} - ${teamCompetitor.name}  `
           );
           if (teamCurrent.score > teamCompetitor.score) {
             return (win = win + 1);
@@ -34,7 +30,7 @@ const Teams = (props) => {
     return (
       <tr key={index}>
         <th scope="row">{index + 1}</th>
-        <td>{team.name}</td>
+        <td className="width line-wrap">{team.name}</td>
         <td>{win + draw + lost}</td>
         <td>{win}</td>
         <td>{draw}</td>
@@ -59,12 +55,11 @@ const Teams = (props) => {
     isLoading(false);
   }, [teams]);
 
-  console.log(matches);
   return loading ? (
     <></>
   ) : (
     <div className="tables row">
-      <div className="col-12 col-md-8 score-table d-flex justify-content-center">
+      <div className="col-12 col-lg-7 score-table d-flex justify-content-center">
         <table className="table table-dark table-bordered table-width">
           <thead className="thead-dark">
             <tr>
@@ -82,20 +77,20 @@ const Teams = (props) => {
           </tbody>
         </table>
       </div>
-      <div className="games-list col-12 col-md-4  d-flex justify-content-center">
-        <table>
+      <div className="games-list col-12 col-lg-5  d-flex justify-content-center">
+        <table className="d-none">
           <tbody>
             {teams.length > 1 &&
               matches.map((match, index) => (
                 <tr key={index}>
-                  {match.teams.map((team, index) =>
-                    index % 2 === 0 ? (
-                      <td key={index}>
+                  {match.teams.map((team, i) =>
+                    i % 2 === 0 ? (
+                      <td key={i}>
                         {team.name}
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
-                            team.score = Number(e.target.score.value);
+                            team.score = Number(match.id);
                             forceUpdate(uid());
                           }}
                           className="ms-3"
@@ -104,7 +99,7 @@ const Teams = (props) => {
                         </form>
                       </td>
                     ) : (
-                      <td key={index}>
+                      <td key={i}>
                         <form
                           onSubmit={(e) => {
                             e.preventDefault();
@@ -123,6 +118,55 @@ const Teams = (props) => {
               ))}
           </tbody>
         </table>
+        <div className="games-list">
+          {matches.map((match, index) => (
+            <form
+              key={index}
+              onSubmit={(e) => {
+                e.preventDefault();
+                setScores([
+                  ...scores,
+                  {
+                    id: match.id,
+                    teams: [
+                      {
+                        id: match.teams[0].id,
+                        name: match.teams[0].name,
+                        score: Number(e.target.team1.value),
+                      },
+                      {
+                        id: match.teams[1].id,
+                        name: match.teams[1].name,
+                        score: Number(e.target.team2.value),
+                      },
+                    ],
+                  },
+                ]);
+                forceUpdate(uid());
+              }}
+            >
+              {match.teams.map((team, i) =>
+                i % 2 === 0 ? (
+                  <label key={i} className="">
+                    <span className="team-left line-wrap">{team.name}</span>
+                    <input type="number" min="0" name="team1" required />
+                  </label>
+                ) : (
+                  <label key={i}>
+                    :
+                    <input type="number" min="0" name="team2" required />
+                    <span className="team-right line-wrap">{team.name}</span>
+                  </label>
+                )
+              )}
+              <input
+                type="submit"
+                value="Save"
+                className="btn btn-dark btn-sm"
+              />
+            </form>
+          ))}
+        </div>
       </div>
     </div>
   );

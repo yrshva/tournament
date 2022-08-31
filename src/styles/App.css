@@ -1,29 +1,50 @@
+@import url("https://rsms.me/inter/inter.css");
+.line-wrap {
+  word-wrap: break-word;
+}
+
 .app-container {
   background-color: #EBBE9B;
   min-height: 100vh;
   width: 100%;
   padding-top: 30px;
+  font-family: "Inter", sans-serif;
 }
 
 .verital-align {
   position: relative;
-  /*top: 50%;
-  transform: translateY(-50%);*/
-  max-width: 900px;
+  max-width: 1200px;
 }
 
 .score-table {
   margin-top: 20px;
+  font-size: 14px;
 }
 
 .table-width {
   max-width: 900px;
 }
-
-.games-list table form {
-  display: inline;
+@media screen and (max-width: 900px) {
+  .table-width .width {
+    max-width: 30px;
+  }
 }
-.games-list table input {
+
+.games-list {
+  font-size: 14px;
+}
+.games-list label span {
+  line-height: 14px;
+  display: inline-block;
+  width: 70px;
+}
+.games-list label .team-left {
+  text-align: right;
+}
+.games-list label input {
+  border: none;
+  border-radius: 10%;
+  margin: 5px 10px;
   text-align: center;
   width: 50px;
 }/*# sourceMappingURL=App.css.map */

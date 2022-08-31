@@ -29,6 +29,7 @@ const App = () => {
             name="team_name"
             placeholder="New team"
             className="form-control me-3"
+            required
           />
           <input type="submit" placeholder="Add" className="btn btn-dark" />
         </form>
