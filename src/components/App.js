@@ -42,7 +42,7 @@ const App = () => {
       <div className="app-container">
         <div className="container position">
           {showSearch()}
-          <Teams teamsData={teams} />
+          <Teams />
         </div>
       </div>
     );

@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { uid } from "uid";
 
 const ADD_TEAM = "ADD_TEAM";
+const ADD_MATCHES = "ADD_MATCHES";
 const ADD_SCORES = "ADD_SCORES";
 
 export function addScores(match, team1_score, team2_score) {
@@ -51,10 +52,40 @@ function scores(state = defaultScores, action) {
       return state;
   }
 }
-export function addTeam(team) {
+
+export function addMatch(team) {
+  return {
+    type: ADD_MATCHES,
+    team,
+  };
+}
+
+const defaultMatches = [];
+
+function matches(state = defaultMatches, action) {
+  switch (action.type) {
+    case ADD_MATCHES:
+      const permutation = (array, length) => {
+        let init = 0;
+        return array.flatMap((element, i) =>
+          length > 1
+            ? permutation(array.slice(i + 1), length - 1).map((el) => ({
+                id: (init = init + 1),
+                teams: [element, ...el],
+              }))
+            : [[element]]
+        );
+      };
+      return permutation(action.team, 2);
+    default:
+      return state;
+  }
+}
+
+export function addTeam(name) {
   return {
     type: ADD_TEAM,
-    team,
+    name,
   };
 }
 
@@ -67,7 +98,7 @@ function teams(state = defaultTeam, action) {
         ...state,
         {
           id: uid(),
-          name: action.team,
+          name: action.name,
         },
       ];
     default:
@@ -77,6 +108,7 @@ function teams(state = defaultTeam, action) {
 const tournamentApp = combineReducers({
   teams,
   scores,
+  matches,
 });
 
 export default tournamentApp;
