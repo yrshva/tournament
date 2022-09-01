@@ -4,7 +4,7 @@ import App from "./components/App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import tournamentApp from "./reducers/addTeams";
+import tournamentApp from "./reducers/index";
 const persistedState = localStorage.getItem("reduxState")
   ? JSON.parse(localStorage.getItem("reduxState"))
   : {};

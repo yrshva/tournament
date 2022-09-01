@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Teams from "./Teams";
 import { useDispatch, useSelector } from "react-redux";
-import { addTeam } from "../reducers/addTeams";
+import { addTeam } from "../reducers/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/App.css";
 

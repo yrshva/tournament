@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addScores } from "../reducers/index";
 
 const Teams = (props) => {
-  const savedscores = JSON.parse(window.localStorage.getItem("scores"));
-  const savedscoresIds = savedscores && savedscores.map((el) => el.id);
+  const dispatch = useDispatch();
+  const scores = useSelector((state) => state.scores);
+  const savedscoresIds = scores && scores.map((el) => el.id);
   const teams = props.teamsData;
   const [matches, setMatches] = useState();
   const [loading, isLoading] = useState(true);
-  const [scores, setScores] = useState(savedscores ? savedscores : []);
-  const [scoresWithoutDublicates, setScoresWithoutDublicates] = useState();
   const scoreCalculator = () => {
     teams.map((team) => {
       let win, draw, lost, teamCurrent, teamCompetitor;
       win = draw = lost = teamCurrent = teamCompetitor = 0;
-      scoresWithoutDublicates &&
-        [...scoresWithoutDublicates].map((score) => {
+      scores &&
+        [...scores].map((score) => {
           if (
             (score.teams[0].id === team.id || score.teams[1].id === team.id) &&
             score.teams[0].score !== undefined &&
@@ -64,29 +65,7 @@ const Teams = (props) => {
     setMatches(permutation(teams, 2));
     isLoading(false);
   }, [teams]);
-  useEffect(() => {
-    const uniqueIds = [];
-    setScoresWithoutDublicates(
-      [...scores]
-        .reverse()
-        .filter((element) => {
-          const isDuplicate = uniqueIds.includes(element.id);
-          if (!isDuplicate) {
-            uniqueIds.push(element.id);
-            return true;
-          }
-          return false;
-        })
-        .reverse()
-    );
-  }, [scores]);
-  useEffect(() => {
-    scoresWithoutDublicates &&
-      window.localStorage.setItem(
-        "scores",
-        JSON.stringify(scoresWithoutDublicates)
-      );
-  }, [scoresWithoutDublicates]);
+
   return loading ? (
     <></>
   ) : (
@@ -114,24 +93,13 @@ const Teams = (props) => {
               key={index}
               onSubmit={(e) => {
                 e.preventDefault();
-                setScores([
-                  ...scores,
-                  {
-                    id: match.id,
-                    teams: [
-                      {
-                        id: match.teams[0].id,
-                        name: match.teams[0].name,
-                        score: Number(e.target.team1.value),
-                      },
-                      {
-                        id: match.teams[1].id,
-                        name: match.teams[1].name,
-                        score: Number(e.target.team2.value),
-                      },
-                    ],
-                  },
-                ]);
+                dispatch(
+                  addScores(
+                    match,
+                    Number(e.target.team1.value),
+                    Number(e.target.team2.value)
+                  )
+                );
               }}
             >
               {match.teams.map((team, i) =>
@@ -139,7 +107,7 @@ const Teams = (props) => {
                   <label key={i} className="">
                     <span className="team-left line-wrap">{team.name}</span>
                     {savedscoresIds.includes(match.id) ? (
-                      savedscores.map(
+                      scores.map(
                         (el, j) =>
                           el.id === match.id && (
                             <input
@@ -160,7 +128,7 @@ const Teams = (props) => {
                   <label key={i}>
                     :
                     {savedscoresIds.includes(match.id) ? (
-                      savedscores.map(
+                      scores.map(
                         (el, j) =>
                           el.id === match.id && (
                             <input
