@@ -28,7 +28,11 @@ const App = () => {
             className="form-control me-3"
             required
           />
-          <input type="submit" placeholder="Add" className="btn btn-dark" />
+          <input
+            type="submit"
+            placeholder="Add"
+            className="btn-custom btn-submit"
+          />
         </form>
       </div>
     );

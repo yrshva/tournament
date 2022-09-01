@@ -7,10 +7,10 @@ import MatchesList from "./MatchesList";
 const Teams = () => {
   const dispatch = useDispatch();
   const teams = useSelector((state) => state.teams);
-  const [loading, isLoading] = useState(true);
+  const [loading, setIsLoading] = useState(true);
   useEffect(() => {
     dispatch(addMatch(teams));
-    isLoading(false);
+    setIsLoading(false);
   }, [teams, dispatch]);
 
   return loading ? (
