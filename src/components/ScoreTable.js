@@ -1,10 +1,12 @@
+import { uid } from "uid";
 import useFormattedTeams from "./customHooks/useFormattedTeams";
 
 const ScoreTable = () => {
   const formattedTeams = useFormattedTeams();
   const sortedTeams = formattedTeams.sort((a, b) => b.points - a.points);
+
   return sortedTeams.map((team, index) => (
-    <tr key={index}>
+    <tr key={uid()}>
       <th scope="row">{index + 1}</th>
       <td className="width line-wrap">{team.name}</td>
       <td>{team.played}</td>
