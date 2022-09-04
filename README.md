@@ -1,6 +1,5 @@
 <h3>Description</h3>
-The app was developed on React using Redux as a technical task from one of the hiring company. 
-Matches with each team are being created after user adds more than 1 team. 
+The app was developed on React using Redux as a technical task from one of the hiring company. After adding a new team it automatically pairs with the rest teams.
 
 <h3>Technologies</h3>
 <ul>
