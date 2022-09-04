@@ -1,78 +1,32 @@
 import { useDispatch, useSelector } from "react-redux";
+import { uid } from "uid";
 import { addScores } from "../reducers/index";
+import Party from "./Party";
 
 const MatchesList = () => {
   const dispatch = useDispatch();
+
   const scores = useSelector((state) => state.scores);
-  const savedscoresIds = scores.length > 0 && scores.map((el) => el.id);
   const matches = useSelector((state) => state.matches);
+
   return (
     <div>
-      {matches.map((match, index) => (
+      {matches.map((match) => (
         <form
-          key={index}
+          key={uid()}
           onSubmit={(e) => {
             e.preventDefault();
             dispatch(
-              addScores(
-                match,
-                Number(e.target.team1.value),
-                Number(e.target.team2.value)
-              )
+              addScores(match, +e.target.left.value, +e.target.right.value)
             );
           }}
         >
           {
             //setting pairs of teams
             match.teams.map((team, i) =>
-              i % 2 === 0 ? (
-                //left team
-                <label key={i} className="">
-                  <span className="team-left line-wrap">{team.name}</span>
-                  {savedscoresIds.length > 0 &&
-                  savedscoresIds.includes(match.id) ? (
-                    scores.map(
-                      (el, j) =>
-                        el.id === match.id && (
-                          <input
-                            key={j}
-                            type="number"
-                            min="0"
-                            name="team1"
-                            defaultValue={el.teams[0].score}
-                            required
-                          />
-                        )
-                    )
-                  ) : (
-                    <input type="number" min="0" name="team1" required />
-                  )}
-                </label>
-              ) : (
-                //right team
-                <label key={i}>
-                  :
-                  {savedscoresIds.length > 0 &&
-                  savedscoresIds.includes(match.id) ? (
-                    scores.map(
-                      (el, j) =>
-                        el.id === match.id && (
-                          <input
-                            key={j}
-                            type="number"
-                            min="0"
-                            name="team2"
-                            defaultValue={el.teams[1].score}
-                            required
-                          />
-                        )
-                    )
-                  ) : (
-                    <input type="number" min="0" name="team2" required />
-                  )}
-                  <span className="team-right line-wrap">{team.name}</span>
-                </label>
-              )
+              i % 2 === 0
+                ? Party(match, team, "left", scores)
+                : Party(match, team, "right", scores)
             )
           }
           <input type="submit" value="Save" className="btn-custom btn-save" />
