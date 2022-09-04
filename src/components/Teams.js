@@ -13,32 +13,32 @@ const Teams = () => {
     setIsLoading(false);
   }, [teams, dispatch]);
 
-  return loading ? (
-    <></>
-  ) : (
-    <div className="tables row">
-      <div className="col-12 col-lg-7 score-table">
-        <table className="table table-dark table-bordered table-width">
-          <thead className="thead-dark">
-            <tr className="font">
-              <th scope="col">Place</th>
-              <th scope="col">Team</th>
-              <th scope="col">Played</th>
-              <th scope="col">Win</th>
-              <th scope="col">Draw</th>
-              <th scope="col">Lost</th>
-              <th scope="col">Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ScoreTable />
-          </tbody>
-        </table>
+  return (
+    !loading && (
+      <div className="tables row">
+        <div className="col-12 col-lg-7 score-table">
+          <table className="table table-dark table-bordered table-width">
+            <thead className="thead-dark">
+              <tr className="font">
+                <th scope="col">Place</th>
+                <th scope="col">Team</th>
+                <th scope="col">Played</th>
+                <th scope="col">Win</th>
+                <th scope="col">Draw</th>
+                <th scope="col">Lost</th>
+                <th scope="col">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ScoreTable />
+            </tbody>
+          </table>
+        </div>
+        <div className="games-list col-12 col-lg-5 d-flex justify-content-center">
+          <MatchesList />
+        </div>
       </div>
-      <div className="games-list col-12 col-lg-5 d-flex justify-content-center">
-        <MatchesList />
-      </div>
-    </div>
+    )
   );
 };
 export default Teams;
