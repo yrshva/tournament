@@ -4,7 +4,6 @@ The app was developed on React using Redux as a technical task from one of the h
 <h3>Technologies</h3>
 <ul>
 <li>React</li>
-<li>TypeScript</li>
 <li>Redux </li>
 </ul>
 
