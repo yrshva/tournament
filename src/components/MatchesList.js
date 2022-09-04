@@ -5,12 +5,13 @@ import Party from "./Party";
 
 const MatchesList = () => {
   const dispatch = useDispatch();
+
   const scores = useSelector((state) => state.scores);
   const matches = useSelector((state) => state.matches);
 
   return (
     <div>
-      {matches.map((match, index) => (
+      {matches.map((match) => (
         <form
           key={uid()}
           onSubmit={(e) => {

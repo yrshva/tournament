@@ -9,10 +9,11 @@ const useFormattedTeams = () => {
     scores.length > 0 &&
       scores.map((score) => {
         //filling new array of Teams with new values: played, win, draw, lost, points
+        const [team1, team2] = [score.teams[0], score.teams[1]];
         if (
-          (score.teams[0].id === team.id || score.teams[1].id === team.id) &&
-          score.teams[0].score !== undefined &&
-          score.teams[1].score !== undefined
+          (team1.id === team.id || team2.id === team.id) &&
+          team1.score !== undefined &&
+          team2.score !== undefined
         ) {
           score.teams.map((el) =>
             el.id === team.id ? (teamCurrent = el) : (teamCompetitor = el)
