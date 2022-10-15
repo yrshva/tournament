@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/tournament/static/css/main.28a5d796.css",
+    "main.js": "/tournament/static/js/main.30d6ad29.js",
+    "static/js/787.5796dfe9.chunk.js": "/tournament/static/js/787.5796dfe9.chunk.js",
+    "index.html": "/tournament/index.html",
+    "main.28a5d796.css.map": "/tournament/static/css/main.28a5d796.css.map",
+    "main.30d6ad29.js.map": "/tournament/static/js/main.30d6ad29.js.map",
+    "787.5796dfe9.chunk.js.map": "/tournament/static/js/787.5796dfe9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.28a5d796.css",
+    "static/js/main.30d6ad29.js"
+  ]
+}
